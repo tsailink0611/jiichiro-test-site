@@ -1,15 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ContentManager, type SiteContent, type HeroContent, type ProductContent } from '@/lib/content-manager'
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [activeSection, setActiveSection] = useState('dashboard')
   const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const [content, setContent] = useState<SiteContent | null>(null)
+  const [saving, setSaving] = useState(false)
+
+  // コンテンツを読み込み
+  useEffect(() => {
+    if (isLoggedIn) {
+      setContent(ContentManager.getContent())
+    }
+  }, [isLoggedIn])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    // 簡単な認証（実際のプロジェクトではより安全な方法を使用）
     if (credentials.username === 'admin' && credentials.password === 'jiichiro2024') {
       setIsLoggedIn(true)
     } else {
@@ -21,6 +30,25 @@ export default function AdminPage() {
     setIsLoggedIn(false)
     setCredentials({ username: '', password: '' })
     setActiveSection('dashboard')
+    setContent(null)
+  }
+
+  const saveContent = async () => {
+    if (!content) return
+    setSaving(true)
+
+    try {
+      ContentManager.saveContent(content)
+      alert('✅ コンテンツを保存しました！サイトに即座に反映されます。')
+    } catch (error) {
+      alert('❌ 保存に失敗しました')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const previewSite = () => {
+    window.open('/', '_blank')
   }
 
   if (!isLoggedIn) {
@@ -86,6 +114,10 @@ export default function AdminPage() {
     )
   }
 
+  if (!content) {
+    return <div className="min-h-screen flex items-center justify-center">読み込み中...</div>
+  }
+
   return (
     <div className="min-h-screen flex">
       {/* サイドバー */}
@@ -105,10 +137,10 @@ export default function AdminPage() {
           <ul className="space-y-2">
             {[
               { id: 'dashboard', label: 'ダッシュボード', icon: '📊' },
+              { id: 'page-editor', label: 'ページ管理', icon: '📝' },
+              { id: 'hero-editor', label: 'ヒーロー編集', icon: '🏠' },
               { id: 'products', label: '商品管理', icon: '🍰' },
-              { id: 'content', label: 'コンテンツ管理', icon: '📝' },
-              { id: 'orders', label: '注文管理', icon: '📋' },
-              { id: 'customers', label: '顧客管理', icon: '👥' },
+              { id: 'content', label: 'コンテンツ管理', icon: '📄' },
               { id: 'analytics', label: '分析レポート', icon: '📈' },
               { id: 'settings', label: '設定', icon: '⚙️' }
             ].map(item => (
@@ -129,7 +161,13 @@ export default function AdminPage() {
           </ul>
         </nav>
 
-        <div className="absolute bottom-5 left-5 right-5">
+        <div className="absolute bottom-5 left-5 right-5 space-y-3">
+          <button
+            onClick={previewSite}
+            className="w-full p-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-all"
+          >
+            📱 サイトプレビュー
+          </button>
           <button
             onClick={handleLogout}
             className="w-full p-3 bg-red-600 hover:bg-red-700 rounded-lg transition-all"
@@ -141,16 +179,30 @@ export default function AdminPage() {
 
       {/* メインコンテンツ */}
       <div className="ml-72 flex-1 p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" style={{ color: '#8B4513', fontFamily: 'serif' }}>
+        <div className="mb-8 flex justify-between items-center">
+          <h1 className="text-3xl font-bold" style={{ color: '#8B4513', fontFamily: 'serif' }}>
             {activeSection === 'dashboard' && 'ダッシュボード'}
+            {activeSection === 'page-editor' && 'ページ管理'}
+            {activeSection === 'hero-editor' && 'ヒーロー編集'}
             {activeSection === 'products' && '商品管理'}
             {activeSection === 'content' && 'コンテンツ管理'}
-            {activeSection === 'orders' && '注文管理'}
-            {activeSection === 'customers' && '顧客管理'}
             {activeSection === 'analytics' && '分析レポート'}
             {activeSection === 'settings' && '設定'}
           </h1>
+
+          {(activeSection === 'hero-editor' || activeSection === 'products' || activeSection === 'page-editor') && (
+            <button
+              onClick={saveContent}
+              disabled={saving}
+              className={`px-6 py-3 text-white font-medium rounded-lg transition-all ${
+                saving
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-600 hover:bg-green-700 hover:transform hover:-translate-y-1'
+              }`}
+            >
+              {saving ? '保存中...' : '💾 変更を保存'}
+            </button>
+          )}
         </div>
 
         {/* ダッシュボード */}
@@ -158,10 +210,10 @@ export default function AdminPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
-                { title: '今日の売上', value: '¥45,280', icon: '💰', color: 'bg-green-500' },
-                { title: '新規注文', value: '12', icon: '📦', color: 'bg-blue-500' },
-                { title: '在庫アラート', value: '3', icon: '⚠️', color: 'bg-yellow-500' },
-                { title: '顧客数', value: '1,234', icon: '👥', color: 'bg-purple-500' }
+                { title: 'ページビュー', value: '1,234', icon: '👁️', color: 'bg-blue-500' },
+                { title: '管理画面ログイン', value: '12', icon: '🔐', color: 'bg-green-500' },
+                { title: 'コンテンツ更新', value: '8', icon: '✏️', color: 'bg-yellow-500' },
+                { title: 'システム稼働率', value: '99.9%', icon: '⚡', color: 'bg-purple-500' }
               ].map((stat, index) => (
                 <div key={index} className="bg-white rounded-xl p-6 shadow-md">
                   <div className="flex items-center justify-between">
@@ -178,57 +230,167 @@ export default function AdminPage() {
             </div>
 
             <div className="bg-white rounded-xl p-6 shadow-md">
-              <h3 className="text-xl font-semibold mb-4">最近の注文</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left p-3">注文番号</th>
-                      <th className="text-left p-3">顧客名</th>
-                      <th className="text-left p-3">商品</th>
-                      <th className="text-left p-3">金額</th>
-                      <th className="text-left p-3">ステータス</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { id: '#JR001', customer: '田中様', product: '治一郎のバウムクーヘン', amount: '¥1,620', status: '処理中' },
-                      { id: '#JR002', customer: '佐藤様', product: 'カットバウム×3', amount: '¥2,592', status: '発送済み' },
-                      { id: '#JR003', customer: '山田様', product: 'ミニバウム×5', amount: '¥2,700', status: '完了' }
-                    ].map((order, index) => (
-                      <tr key={index} className="border-b hover:bg-gray-50">
-                        <td className="p-3 font-medium">{order.id}</td>
-                        <td className="p-3">{order.customer}</td>
-                        <td className="p-3">{order.product}</td>
-                        <td className="p-3 font-semibold">{order.amount}</td>
-                        <td className="p-3">
-                          <span className={`px-3 py-1 rounded-full text-sm ${
-                            order.status === '完了' ? 'bg-green-100 text-green-800' :
-                            order.status === '発送済み' ? 'bg-blue-100 text-blue-800' :
-                            'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {order.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <h3 className="text-xl font-semibold mb-4">🚀 ビジネスパートナー向けデモ</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <h4 className="font-semibold text-blue-800 mb-2">📝 リアルタイム編集</h4>
+                  <p className="text-sm text-blue-700">
+                    管理画面でテキストや画像を編集すると、即座にサイトに反映されます。
+                  </p>
+                </div>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-800 mb-2">🎯 直感的な操作</h4>
+                  <p className="text-sm text-green-700">
+                    専門知識不要。フォーム入力だけで本格的なサイト管理が可能です。
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         )}
 
+        {/* ヒーロー編集 */}
+        {activeSection === 'hero-editor' && (
+          <div className="bg-white rounded-xl p-8 shadow-md">
+            <h3 className="text-xl font-semibold mb-6">🏠 トップページヒーロー編集</h3>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  メインタイトル
+                </label>
+                <input
+                  type="text"
+                  value={content.hero.title}
+                  onChange={(e) => setContent({
+                    ...content,
+                    hero: { ...content.hero, title: e.target.value }
+                  })}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="例: 治一郎 - 極上のバウムクーヘン"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  サブタイトル
+                </label>
+                <textarea
+                  value={content.hero.subtitle}
+                  onChange={(e) => setContent({
+                    ...content,
+                    hero: { ...content.hero, subtitle: e.target.value }
+                  })}
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="例: 職人の技が生み出す、しっとりとした極上の味わい"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ボタンテキスト
+                </label>
+                <input
+                  type="text"
+                  value={content.hero.ctaText}
+                  onChange={(e) => setContent({
+                    ...content,
+                    hero: { ...content.hero, ctaText: e.target.value }
+                  })}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="例: 商品を見る"
+                />
+              </div>
+
+              <div className="p-4 bg-amber-50 rounded-lg">
+                <h4 className="font-semibold text-amber-800 mb-2">💡 プレビュー</h4>
+                <div className="text-sm text-amber-700">
+                  <p><strong>タイトル:</strong> {content.hero.title}</p>
+                  <p><strong>サブタイトル:</strong> {content.hero.subtitle}</p>
+                  <p><strong>ボタン:</strong> {content.hero.ctaText}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 商品管理 */}
+        {activeSection === 'products' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-semibold">🍰 商品情報編集</h3>
+              <div className="text-sm text-gray-600">
+                編集後「変更を保存」をクリックしてください
+              </div>
+            </div>
+
+            {content.products.map((product, index) => (
+              <div key={product.id} className="bg-white rounded-xl p-6 shadow-md">
+                <h4 className="font-semibold mb-4">商品 {index + 1}: {product.title}</h4>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        商品名
+                      </label>
+                      <input
+                        type="text"
+                        value={product.title}
+                        onChange={(e) => {
+                          const newProducts = [...content.products]
+                          newProducts[index] = { ...product, title: e.target.value }
+                          setContent({ ...content, products: newProducts })
+                        }}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ボタンテキスト
+                      </label>
+                      <input
+                        type="text"
+                        value={product.cta}
+                        onChange={(e) => {
+                          const newProducts = [...content.products]
+                          newProducts[index] = { ...product, cta: e.target.value }
+                          setContent({ ...content, products: newProducts })
+                        }}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      商品説明
+                    </label>
+                    <textarea
+                      value={product.description}
+                      onChange={(e) => {
+                        const newProducts = [...content.products]
+                        newProducts[index] = { ...product, description: e.target.value }
+                        setContent({ ...content, products: newProducts })
+                      }}
+                      rows={6}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* その他のセクション */}
-        {activeSection !== 'dashboard' && (
+        {(['page-editor', 'content', 'analytics', 'settings'].includes(activeSection)) && (
           <div className="bg-white rounded-xl p-8 shadow-md">
             <div className="text-center py-12">
               <div className="text-6xl mb-4">🚧</div>
               <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-                {activeSection === 'products' && '商品管理機能'}
+                {activeSection === 'page-editor' && 'ページ管理機能'}
                 {activeSection === 'content' && 'コンテンツ管理機能'}
-                {activeSection === 'orders' && '注文管理機能'}
-                {activeSection === 'customers' && '顧客管理機能'}
                 {activeSection === 'analytics' && '分析レポート機能'}
                 {activeSection === 'settings' && '設定機能'}
               </h3>

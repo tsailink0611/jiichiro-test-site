@@ -23,7 +23,7 @@ export default function HomePage() {
 職人が一層一層丁寧に焼き上げ、しっとりとした食感と濃厚な抹茶の風味をお楽しみいただけます。
 
 お茶の時間や大切な方への贈り物にも最適です。`}
-        image="https://via.placeholder.com/600x400/404B15/FFFFFF?text=抹茶バウムクーヘン"
+        image="data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23404B15'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='white' text-anchor='middle' dy='0.3em'%3E抹茶バウムクーヘン%3C/text%3E%3C/svg%3E"
         cta="抹茶バウムクーヘンを見る"
       />
 
@@ -34,7 +34,7 @@ export default function HomePage() {
 厳選された材料を使用し、伝統的な製法で丁寧に焼き上げました。
 
 素材本来の美味しさを存分に味わえる、当店の原点となる一品です。`}
-        image="https://via.placeholder.com/600x400/D4A574/FFFFFF?text=プレーンバウムクーヘン"
+        image="data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23D4A574'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='white' text-anchor='middle' dy='0.3em'%3Eプレーンバウムクーヘン%3C/text%3E%3C/svg%3E"
         reverse
         cta="プレーンバウムクーヘンを見る"
       />
@@ -46,7 +46,7 @@ export default function HomePage() {
 春は桜、夏は柑橘、秋は栗、冬は抹茶など、その時期ならではの風味をお届けします。
 
 大切な方への贈り物や特別な日のお祝いにぜひご利用ください。`}
-        image="https://via.placeholder.com/600x400/8B4513/FFFFFF?text=季節限定ギフトセット"
+        image="data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%238B4513'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='white' text-anchor='middle' dy='0.3em'%3E季節限定ギフトセット%3C/text%3E%3C/svg%3E"
         cta="ギフトセットを見る"
       />
 

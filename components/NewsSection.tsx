@@ -1,7 +1,19 @@
 import Image from 'next/image';
 
-export default function NewsSection() {
-  const newsItems = [
+interface NewsItem {
+  id: string;
+  title: string;
+  date: string;
+  summary: string;
+}
+
+interface NewsSectionProps {
+  news?: NewsItem[];
+}
+
+export default function NewsSection({ news }: NewsSectionProps) {
+  // デフォルトのニュースアイテム
+  const defaultNewsItems = [
     {
       date: "2025/09/17",
       category: "重要なお知らせ",
@@ -23,6 +35,13 @@ export default function NewsSection() {
       title: "夏のギフトセット特別価格のご案内"
     }
   ];
+
+  // プロップスからのニュースがある場合はそれを使用、ない場合はデフォルト
+  const newsItems = news ? news.map(item => ({
+    date: item.date,
+    category: "お知らせ",
+    title: item.title
+  })) : defaultNewsItems;
 
   return (
     <section className="py-16 md:py-24 lg:py-32 bg-white">
