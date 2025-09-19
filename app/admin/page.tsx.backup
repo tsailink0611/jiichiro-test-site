@@ -75,12 +75,6 @@ export default function AdminPage() {
               ログイン
             </button>
           </form>
-
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-            <p className="text-sm text-gray-600 font-medium mb-2">テストアカウント：</p>
-            <p className="text-sm text-gray-700">ユーザー名: <span className="font-mono bg-gray-200 px-2 py-1 rounded">admin</span></p>
-            <p className="text-sm text-gray-700">パスワード: <span className="font-mono bg-gray-200 px-2 py-1 rounded">jiichiro2024</span></p>
-          </div>
         </div>
       </div>
     )
