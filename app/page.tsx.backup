@@ -1,0 +1,56 @@
+import Hero from "@/components/Hero";
+import NewsSection from "@/components/NewsSection";
+import { ProductBlock } from "@/components/ProductBlock";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+export default function HomePage() {
+  return (
+    <>
+      <Header />
+
+      {/* Hero Section */}
+      <Hero />
+
+      {/* News Section */}
+      <NewsSection />
+
+      {/* Product Sections */}
+      <ProductBlock
+        title="抹茶のバウムクーヘン"
+        description={`深い抹茶の香りと上品な甘さが絶妙に調和した、当店自慢のバウムクーヘンです。
+
+職人が一層一層丁寧に焼き上げ、しっとりとした食感と濃厚な抹茶の風味をお楽しみいただけます。
+
+お茶の時間や大切な方への贈り物にも最適です。`}
+        image="https://via.placeholder.com/600x400/404B15/FFFFFF?text=抹茶バウムクーヘン"
+        cta="抹茶バウムクーヘンを見る"
+      />
+
+      <ProductBlock
+        title="プレーンバウムクーヘン"
+        description={`シンプルでありながら奥深い味わいの定番バウムクーヘン。
+
+厳選された材料を使用し、伝統的な製法で丁寧に焼き上げました。
+
+素材本来の美味しさを存分に味わえる、当店の原点となる一品です。`}
+        image="https://via.placeholder.com/600x400/D4A574/FFFFFF?text=プレーンバウムクーヘン"
+        reverse
+        cta="プレーンバウムクーヘンを見る"
+      />
+
+      <ProductBlock
+        title="季節限定ギフトセット"
+        description={`四季折々の味わいを楽しめる特別なギフトセット。
+
+春は桜、夏は柑橘、秋は栗、冬は抹茶など、その時期ならではの風味をお届けします。
+
+大切な方への贈り物や特別な日のお祝いにぜひご利用ください。`}
+        image="https://via.placeholder.com/600x400/8B4513/FFFFFF?text=季節限定ギフトセット"
+        cta="ギフトセットを見る"
+      />
+
+      <Footer />
+    </>
+  );
+}

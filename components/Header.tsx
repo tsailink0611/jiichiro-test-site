@@ -1,0 +1,66 @@
+"use client";
+
+import { useState } from 'react';
+import Image from 'next/image';
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="mx-auto max-w-screen-xl px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <a href="/" className="font-serif-jp text-2xl font-bold text-brand">
+              治一郎
+            </a>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="/about" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">治一郎について</a>
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">商品一覧</a>
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">ギフト</a>
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">店舗案内</a>
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">お知らせ</a>
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:underline underline-offset-4 font-medium">会社情報</a>
+          </nav>
+
+          {/* Cart & Mobile Menu */}
+          <div className="flex items-center space-x-4">
+            <a href="#" className="text-gray-700 hover:text-brand transition-all duration-300 hover:scale-110 transform">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2-2m2 2l2 2M17 21a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2 0 100-4 2 2 0 000 4z" />
+              </svg>
+            </a>
+
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden text-gray-700 hover:text-brand"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t">
+            <nav className="flex flex-col space-y-4">
+              <a href="/about" className="text-gray-700 hover:text-brand transition-colors py-2">治一郎について</a>
+              <a href="#" className="text-gray-700 hover:text-brand transition-colors py-2">商品一覧</a>
+              <a href="#" className="text-gray-700 hover:text-brand transition-colors py-2">ギフト</a>
+              <a href="#" className="text-gray-700 hover:text-brand transition-colors py-2">店舗案内</a>
+              <a href="#" className="text-gray-700 hover:text-brand transition-colors py-2">お知らせ</a>
+              <a href="#" className="text-gray-700 hover:text-brand transition-colors py-2">会社情報</a>
+            </nav>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
