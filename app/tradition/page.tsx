@@ -1,14 +1,39 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { ContentManagerEnhanced, type TraditionContent } from '@/lib/content-manager-enhanced'
 
 export default function TraditionPage() {
   const heroRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const bentoRef = useRef<HTMLDivElement>(null)
   const horizontalRef = useRef<HTMLDivElement>(null)
+  const [traditionContent, setTraditionContent] = useState<TraditionContent | null>(null)
+
+  useEffect(() => {
+    // コンテンツロード
+    const loadContent = async () => {
+      try {
+        const siteContent = await ContentManagerEnhanced.getContent()
+        setTraditionContent(siteContent.tradition)
+      } catch (error) {
+        console.error('伝統ページコンテンツ読み込みエラー:', error)
+      }
+    }
+
+    loadContent()
+
+    // リアルタイム更新リスナー
+    const handleContentUpdate = (event: CustomEvent) => {
+      const updatedContent = event.detail
+      setTraditionContent(updatedContent.tradition)
+    }
+
+    window.addEventListener('content-updated', handleContentUpdate as EventListener)
+    return () => window.removeEventListener('content-updated', handleContentUpdate as EventListener)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,11 +88,20 @@ export default function TraditionPage() {
 
         <div className="relative z-10 text-center max-w-4xl mx-auto px-8">
           <h1 className="text-7xl md:text-9xl font-extralight text-stone-800 mb-8 tracking-wider">
-            伝統
+            {traditionContent?.heroTitle || '伝統'}
           </h1>
           <p className="text-2xl md:text-3xl text-stone-600 font-light leading-relaxed">
-            受け継がれる技と心<br />
-            時を超えて愛される味わい
+            {traditionContent?.heroSubtitle?.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < (traditionContent?.heroSubtitle?.split('\n').length || 1) - 1 && <br />}
+              </span>
+            )) || (
+              <>
+                受け継がれる技と心<br />
+                時を超えて愛される味わい
+              </>
+            )}
           </p>
         </div>
 
@@ -88,8 +122,17 @@ export default function TraditionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 lg:gap-40 items-center">
             <div className="space-y-12 lg:space-y-16">
               <h2 className="text-6xl md:text-7xl lg:text-8xl font-extralight text-stone-800 leading-tight tracking-wider">
-                四季を纏う<br />
-                職人の技
+                {traditionContent?.sectionTitle?.split('\n').map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    {index < (traditionContent?.sectionTitle?.split('\n').length || 1) - 1 && <br />}
+                  </span>
+                )) || (
+                  <>
+                    四季を纏う<br />
+                    職人の技
+                  </>
+                )}
               </h2>
               <div className="w-32 h-1 bg-stone-400"></div>
               <p className="text-2xl md:text-3xl text-stone-600 leading-relaxed font-light max-w-2xl">
@@ -198,13 +241,22 @@ export default function TraditionPage() {
       <section className="py-48 md:py-56 lg:py-64 px-8 bg-gradient-to-b from-stone-50 to-stone-100">
         <div className="max-w-6xl mx-auto text-center space-y-20 lg:space-y-24">
           <h2 className="text-6xl md:text-7xl lg:text-8xl font-extralight text-stone-800 leading-tight tracking-wider">
-            伝統は、未来への贈り物
+            {traditionContent?.finalTitle || '伝統は、未来への贈り物'}
           </h2>
           <div className="w-40 h-1 bg-stone-400 mx-auto"></div>
           <p className="text-2xl md:text-3xl lg:text-4xl text-stone-600 leading-relaxed font-extralight max-w-5xl mx-auto">
-            私たちは、先人から受け継いだ技術と心を大切にしながら、<br />
-            次世代に向けて新しい価値を創造し続けます。<br />
-            伝統とは、過去の遺産ではなく、未来への約束なのです。
+            {traditionContent?.finalMessage?.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < (traditionContent?.finalMessage?.split('\n').length || 1) - 1 && <br />}
+              </span>
+            )) || (
+              <>
+                私たちは、先人から受け継いだ技術と心を大切にしながら、<br />
+                次世代に向けて新しい価値を創造し続けます。<br />
+                伝統とは、過去の遺産ではなく、未来への約束なのです。
+              </>
+            )}
           </p>
         </div>
       </section>

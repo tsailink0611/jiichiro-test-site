@@ -11,6 +11,8 @@ export default function DashboardPage() {
   const { user, loading } = useAuthState()
   const [content, setContent] = useState<SiteContent | null>(null)
   const [lastUpdated, setLastUpdated] = useState<string>('')
+  const [editingPage, setEditingPage] = useState<string | null>(null)
+  const [editData, setEditData] = useState<any>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -54,6 +56,76 @@ export default function DashboardPage() {
         alert('リセットに失敗しました')
       }
     }
+  }
+
+  const handleEditPage = (pageType: string) => {
+    if (!content) return
+
+    console.log('編集開始:', pageType)
+    setEditingPage(pageType)
+
+    switch (pageType) {
+      case 'home':
+        setEditData({
+          hero: content.hero,
+          products: content.products,
+          news: content.news
+        })
+        break
+      case 'tradition':
+        setEditData(content.tradition)
+        break
+      case 'company':
+        setEditData(content.company)
+        break
+      case 'contact':
+        setEditData(content.contact)
+        break
+      case 'access':
+        setEditData(content.access)
+        break
+      default:
+        console.log('未対応のページタイプ:', pageType)
+    }
+  }
+
+  const handleSaveEdit = async () => {
+    if (!editingPage || !editData) return
+
+    try {
+      console.log('保存開始:', editingPage, editData)
+
+      switch (editingPage) {
+        case 'tradition':
+          await ContentManagerEnhanced.updateTradition(editData)
+          break
+        case 'company':
+          await ContentManagerEnhanced.updateCompany(editData)
+          break
+        case 'contact':
+          await ContentManagerEnhanced.updateContact(editData)
+          break
+        case 'access':
+          await ContentManagerEnhanced.updateAccess(editData)
+          break
+        case 'home':
+          await ContentManagerEnhanced.updateHero(editData.hero)
+          break
+      }
+
+      await loadContent()
+      setEditingPage(null)
+      setEditData(null)
+      alert('保存しました！')
+    } catch (error) {
+      console.error('保存エラー:', error)
+      alert('保存に失敗しました')
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditingPage(null)
+    setEditData(null)
   }
 
   if (loading) {
@@ -135,7 +207,10 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-blue-500">
               <h3 className="text-lg font-medium text-gray-900 mb-3">ホームページ</h3>
               <p className="text-gray-600 mb-4 text-sm">ヒーローセクション・商品・お知らせ</p>
-              <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <button
+                onClick={() => handleEditPage('home')}
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              >
                 編集する
               </button>
             </div>
@@ -143,7 +218,10 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-stone-500">
               <h3 className="text-lg font-medium text-gray-900 mb-3">伝統ページ</h3>
               <p className="text-gray-600 mb-4 text-sm">伝統・技術・職人の心を編集</p>
-              <button className="w-full bg-stone-600 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors text-sm">
+              <button
+                onClick={() => handleEditPage('tradition')}
+                className="w-full bg-stone-600 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors text-sm"
+              >
                 編集する
               </button>
             </div>
@@ -151,7 +229,10 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-green-500">
               <h3 className="text-lg font-medium text-gray-900 mb-3">会社概要</h3>
               <p className="text-gray-600 mb-4 text-sm">企業情報・沿革・代表メッセージ</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm">
+              <button
+                onClick={() => handleEditPage('company')}
+                className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm"
+              >
                 編集する
               </button>
             </div>
@@ -159,7 +240,10 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-purple-500">
               <h3 className="text-lg font-medium text-gray-900 mb-3">お問い合わせ</h3>
               <p className="text-gray-600 mb-4 text-sm">連絡先・フォーム・FAQ</p>
-              <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm">
+              <button
+                onClick={() => handleEditPage('contact')}
+                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm"
+              >
                 編集する
               </button>
             </div>
@@ -167,7 +251,10 @@ export default function DashboardPage() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-orange-500">
               <h3 className="text-lg font-medium text-gray-900 mb-3">アクセス</h3>
               <p className="text-gray-600 mb-4 text-sm">所在地・交通・周辺施設</p>
-              <button className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors text-sm">
+              <button
+                onClick={() => handleEditPage('access')}
+                className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors text-sm"
+              >
                 編集する
               </button>
             </div>
@@ -264,6 +351,98 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* 編集モーダル */}
+      {editingPage && editData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-gray-900">
+                {editingPage === 'home' && 'ホームページ編集'}
+                {editingPage === 'tradition' && '伝統ページ編集'}
+                {editingPage === 'company' && '会社概要編集'}
+                {editingPage === 'contact' && 'お問い合わせ編集'}
+                {editingPage === 'access' && 'アクセス編集'}
+              </h3>
+              <button
+                onClick={handleCancelEdit}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* 伝統ページ編集フォーム */}
+              {editingPage === 'tradition' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">ヒーロータイトル</label>
+                    <input
+                      type="text"
+                      value={editData.heroTitle || ''}
+                      onChange={(e) => setEditData({...editData, heroTitle: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">ヒーローサブタイトル</label>
+                    <textarea
+                      value={editData.heroSubtitle || ''}
+                      onChange={(e) => setEditData({...editData, heroSubtitle: e.target.value})}
+                      rows={2}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">セクションタイトル</label>
+                    <textarea
+                      value={editData.sectionTitle || ''}
+                      onChange={(e) => setEditData({...editData, sectionTitle: e.target.value})}
+                      rows={2}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">最終メッセージ</label>
+                    <textarea
+                      value={editData.finalMessage || ''}
+                      onChange={(e) => setEditData({...editData, finalMessage: e.target.value})}
+                      rows={4}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* その他のページは現在データ表示のみ */}
+              {editingPage !== 'tradition' && (
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <p className="text-gray-600 mb-2">編集データ (開発中):</p>
+                  <pre className="text-xs text-gray-800 overflow-auto">
+                    {JSON.stringify(editData, null, 2)}
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={handleCancelEdit}
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                キャンセル
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-4 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors"
+              >
+                保存する
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
