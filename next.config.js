@@ -1,20 +1,41 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 最小限の設定でトラブルシューティング
+  // 本番ビルド最適化設定
+  reactStrictMode: true,
+  swcMinify: true,
+  
+  // イメージ最適化
   images: {
     remotePatterns: [],
+    formats: ['image/webp'],
   },
-  // 開発時の問題を解決するための設定
-  onDemandEntries: {
-    // ページがメモリに保持される時間を延長
-    maxInactiveAge: 25 * 1000,
-    // 同時に保持されるページ数
-    pagesBufferLength: 2,
+  
+  // 実験的機能
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
   },
-  // 厳密なモードを無効化（一時的）
-  reactStrictMode: false,
-  // SWCの最適化を無効化（一時的）
-  swcMinify: false,
+  
+  // Webpack設定
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // 本番ビルドでのminification問題を回避
+    if (!dev && !isServer) {
+      config.optimization.minimizer = config.optimization.minimizer.filter(
+        minimizer => minimizer.constructor.name !== 'TerserPlugin'
+      );
+    }
+    
+    return config;
+  },
+  
+  // TypeScript設定
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  
+  // ESLint設定
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
 }
 
 module.exports = nextConfig
