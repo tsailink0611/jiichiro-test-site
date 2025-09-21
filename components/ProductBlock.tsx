@@ -14,45 +14,63 @@ export function ProductBlock({
   description,
   image,
   reverse = false,
-  cta = "商品を見る",
+  cta = "詳しく見る",
   ctaLink = "#"
 }: Product) {
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-white">
-      <div className={`mx-auto max-w-screen-xl px-6 md:px-8 lg:px-12 grid items-center gap-12 md:gap-16 lg:gap-20 md:grid-cols-2 ${
+    <section className="py-24 md:py-32 lg:py-40 bg-white">
+      <div className={`mx-auto max-w-7xl px-8 md:px-12 lg:px-16 grid items-center gap-16 md:gap-20 lg:gap-28 md:grid-cols-2 ${
         reverse ? "md:[&>div:first-child]:order-2" : ""
       }`}>
         {/* Text Content */}
-        <div className="space-y-8">
-          <h2 className="font-serif-jp text-3xl md:text-4xl lg:text-5xl font-bold text-brand leading-tight">
-            {title}
-          </h2>
-          <div className="text-gray-700 text-lg leading-relaxed space-y-4">
+        <div className="space-y-12 lg:space-y-16">
+          <div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-stone-800 leading-tight tracking-wide mb-8">
+              {title}
+            </h2>
+            <div className="w-20 h-0.5 bg-stone-400 mb-10"></div>
+          </div>
+
+          <div className="text-stone-600 text-xl md:text-2xl leading-relaxed space-y-8 font-light">
             {description.split('\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+              <p key={index} className="opacity-90">{paragraph}</p>
             ))}
           </div>
-          <div className="pt-6 md:pt-8">
+
+          <div className="pt-8">
             <a
               href={ctaLink}
-              className="group inline-flex items-center bg-brand text-white px-10 py-4 rounded-xl hover:bg-brand/90 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-500 font-medium text-lg"
+              className="group inline-flex items-center text-stone-800 border-b-2 border-stone-300 hover:border-stone-600 pb-2 transition-all duration-700 font-medium text-lg tracking-wide"
             >
               {cta}
-              <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform duration-700 ease-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
           </div>
         </div>
 
-        {/* Image */}
-        <div className="relative group">
-          <div className="w-full h-72 md:h-96 lg:h-[28rem] rounded-xl shadow-xl group-hover:shadow-2xl transform group-hover:scale-105 transition-all duration-500 bg-brand flex items-center justify-center">
-            <span className="text-white text-xl md:text-2xl lg:text-3xl font-serif-jp font-bold text-center px-6">
-              {title}
-            </span>
+        {/* Image with subtle hover effect */}
+        <div className="relative">
+          <div className="w-full h-80 md:h-96 lg:h-[32rem] rounded-2xl shadow-lg overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center relative group">
+            {/* Subtle floating effect on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-stone-300/30 to-stone-500/20 group-hover:from-stone-200/40 group-hover:to-stone-400/30 transition-all duration-1000 ease-out"></div>
+
+            {/* Content */}
+            <div className="relative z-10 text-center px-8 transform group-hover:-translate-y-2 transition-transform duration-1000 ease-out">
+              <span className="text-stone-700 text-2xl md:text-3xl lg:text-4xl font-light tracking-wider">
+                {title}
+              </span>
+              <div className="mt-6 opacity-70 group-hover:opacity-100 transition-opacity duration-1000">
+                <div className="w-16 h-16 mx-auto border border-stone-400 rounded-full flex items-center justify-center">
+                  <div className="w-3 h-3 bg-stone-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Subtle shadow enhancement */}
+            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-3/4 h-6 bg-stone-300/20 blur-xl group-hover:bg-stone-400/30 transition-all duration-1000 ease-out"></div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
       </div>
     </section>

@@ -22,11 +22,13 @@ export default function TraditionPage() {
         logoRef.current.style.opacity = opacity.toString()
       }
 
-      // 弁当要素浮き上がり
+      // 洗練された浮遊要素アニメーション
       if (bentoRef.current) {
-        const translateY = Math.max(0, 150 - scrollY * 0.15)
-        const opacity = Math.min(1, (scrollY - 200) * 0.005)
-        bentoRef.current.style.transform = `translateY(${translateY}px) rotate(${scrollY * 0.1}deg)`
+        const translateY = Math.max(0, 120 - scrollY * 0.12)
+        const translateX = Math.sin(scrollY * 0.01) * 8
+        const opacity = Math.min(1, (scrollY - 100) * 0.003)
+        const scale = Math.min(1, 0.8 + (scrollY * 0.0005))
+        bentoRef.current.style.transform = `translateY(${translateY}px) translateX(${translateX}px) scale(${scale})`
         bentoRef.current.style.opacity = opacity.toString()
       }
 
@@ -81,20 +83,20 @@ export default function TraditionPage() {
       </div>
 
       {/* コンテンツセクション1 */}
-      <section className="py-32 px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="space-y-8">
-              <h2 className="text-5xl font-light text-stone-800 leading-tight">
+      <section className="py-40 md:py-48 lg:py-56 px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 lg:gap-40 items-center">
+            <div className="space-y-12 lg:space-y-16">
+              <h2 className="text-6xl md:text-7xl lg:text-8xl font-extralight text-stone-800 leading-tight tracking-wider">
                 四季を纏う<br />
                 職人の技
               </h2>
-              <div className="w-24 h-1 bg-stone-400"></div>
-              <p className="text-xl text-stone-600 leading-relaxed font-light">
+              <div className="w-32 h-1 bg-stone-400"></div>
+              <p className="text-2xl md:text-3xl text-stone-600 leading-relaxed font-light max-w-2xl">
                 創業以来変わらぬ製法で、一つひとつ丁寧に仕上げる和菓子。
                 季節の移ろいを表現し、素材の持つ本来の美味しさを大切にしています。
               </p>
-              <p className="text-lg text-stone-500 leading-relaxed">
+              <p className="text-xl md:text-2xl text-stone-500 leading-relaxed font-extralight max-w-xl">
                 熟練の職人が長年培った技術と感性により、
                 伝統の味を現代に受け継いでいます。
               </p>
@@ -112,13 +114,25 @@ export default function TraditionPage() {
         </div>
       </section>
 
-      {/* 浮き上がる弁当要素 */}
+      {/* 洗練された浮遊要素 */}
       <div
         ref={bentoRef}
         className="fixed left-10 top-1/2 opacity-0 pointer-events-none z-10"
       >
-        <div className="text-6xl font-bold text-stone-300/20 select-none">
-          弁当
+        <div className="relative">
+          {/* メイン要素 - 和の美学 */}
+          <div className="text-4xl font-extralight text-stone-400/30 select-none tracking-[0.3em] writing-mode-vertical-rl">
+            和の心
+          </div>
+
+          {/* 装飾要素1 - 微細な粒子効果 */}
+          <div className="absolute -top-8 -left-4 w-2 h-2 bg-stone-300/20 rounded-full animate-pulse"></div>
+          <div className="absolute top-12 -right-2 w-1 h-1 bg-stone-400/25 rounded-full" style={{animationDelay: '1s'}}></div>
+          <div className="absolute -bottom-6 left-2 w-1.5 h-1.5 bg-stone-200/15 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+
+          {/* 装飾要素2 - 繊細なライン */}
+          <div className="absolute top-0 -right-8 w-12 h-px bg-gradient-to-r from-transparent via-stone-300/20 to-transparent"></div>
+          <div className="absolute bottom-0 -left-8 w-10 h-px bg-gradient-to-r from-stone-200/15 via-transparent to-stone-300/20"></div>
         </div>
       </div>
 
@@ -181,15 +195,15 @@ export default function TraditionPage() {
       </section>
 
       {/* 最終セクション */}
-      <section className="py-32 px-8 bg-stone-50">
-        <div className="max-w-4xl mx-auto text-center space-y-12">
-          <h2 className="text-5xl font-light text-stone-800 leading-tight">
+      <section className="py-48 md:py-56 lg:py-64 px-8 bg-gradient-to-b from-stone-50 to-stone-100">
+        <div className="max-w-6xl mx-auto text-center space-y-20 lg:space-y-24">
+          <h2 className="text-6xl md:text-7xl lg:text-8xl font-extralight text-stone-800 leading-tight tracking-wider">
             伝統は、未来への贈り物
           </h2>
-          <div className="w-32 h-1 bg-stone-400 mx-auto"></div>
-          <p className="text-xl text-stone-600 leading-relaxed font-light max-w-3xl mx-auto">
-            私たちは、先人から受け継いだ技術と心を大切にしながら、
-            次世代に向けて新しい価値を創造し続けます。
+          <div className="w-40 h-1 bg-stone-400 mx-auto"></div>
+          <p className="text-2xl md:text-3xl lg:text-4xl text-stone-600 leading-relaxed font-extralight max-w-5xl mx-auto">
+            私たちは、先人から受け継いだ技術と心を大切にしながら、<br />
+            次世代に向けて新しい価値を創造し続けます。<br />
             伝統とは、過去の遺産ではなく、未来への約束なのです。
           </p>
         </div>
