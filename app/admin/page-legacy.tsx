@@ -59,7 +59,7 @@ export default function AdminPage() {
         <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2" style={{ color: '#8B4513', fontFamily: 'serif' }}>
-              治一郎
+              梵天庵
             </h1>
             <div style={{ color: '#DAA520', fontSize: '1.2rem', letterSpacing: '2px' }}>
               管理画面
@@ -126,7 +126,7 @@ export default function AdminPage() {
       }}>
         <div className="p-8 text-center border-b border-amber-600">
           <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: 'serif' }}>
-            治一郎
+            梵天庵
           </h2>
           <div style={{ color: '#DAA520', fontSize: '0.9rem', letterSpacing: '1px' }}>
             管理システム
@@ -266,7 +266,7 @@ export default function AdminPage() {
                     hero: { ...content.hero, title: e.target.value }
                   })}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  placeholder="例: 治一郎 - 極上のバウムクーヘン"
+                  placeholder="例: 梵天庵 - 極上のバウムクーヘン"
                 />
               </div>
 

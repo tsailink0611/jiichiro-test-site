@@ -47,7 +47,7 @@ export default function AboutPage() {
           className="text-6xl font-serif font-bold tracking-[0.5em] text-amber-800 drop-shadow-lg"
           style={{ writingMode: 'vertical-rl', textOrientation: 'upright' }}
         >
-          治一郎
+          梵天庵
         </div>
       </div>
 
@@ -83,10 +83,10 @@ export default function AboutPage() {
         <div className="relative h-full flex items-center justify-center text-amber-900">
           <div className="text-center px-8 max-w-4xl">
             <div className="mb-12 text-lg tracking-[0.3em] opacity-70">
-              ホーム ＞ 治一郎について
+              ホーム ＞ 梵天庵について
             </div>
             <h1 className="text-7xl md:text-8xl lg:text-9xl font-serif font-bold tracking-[0.1em] leading-tight">
-              治一郎について
+              梵天庵について
             </h1>
           </div>
         </div>

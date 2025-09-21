@@ -34,10 +34,10 @@ export interface SiteContent {
   siteId?: string;
 }
 
-// CMSサイトスタジオ用のデフォルトコンテンツ
+// 梵天庵用のデフォルトコンテンツ
 export const defaultContent: SiteContent = {
   hero: {
-    title: "CMSサイトスタジオ - デモコンテンツ",
+    title: "梵天庵 - デモコンテンツ",
     subtitle: "シンプルで直感的なコンテンツ管理システム",
     ctaText: "管理画面を見る"
   },
@@ -82,7 +82,7 @@ export const defaultContent: SiteContent = {
   news: [
     {
       id: "news1",
-      title: "CMSサイトスタジオ v1.0 リリース",
+      title: "梵天庵 v1.0 リリース",
       date: "2024.09.21",
       summary: "ヘッドレスCMSシステムの初回安定版をリリースしました。"
     },

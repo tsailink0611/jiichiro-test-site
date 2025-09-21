@@ -11,26 +11,26 @@ interface HeroProps {
 const slides = [
   {
     src: "data:image/svg+xml,%3Csvg width='1300' height='768' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23404B15'/%3E%3C/svg%3E",
-    alt: "治一郎バウムクーヘン メインビジュアル1",
+    alt: "梵天庵バウムクーヘン メインビジュアル1",
     title: "抹茶のバウムクーヘン",
     subtitle: "深い味わいと上品な香り"
   },
   {
     src: "data:image/svg+xml,%3Csvg width='1300' height='768' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%236B7F2B'/%3E%3C/svg%3E",
-    alt: "治一郎バウムクーヘン メインビジュアル2", 
+    alt: "梵天庵バウムクーヘン メインビジュアル2", 
     title: "職人の技が光る",
     subtitle: "一層一層丁寧に焼き上げ"
   },
   {
     src: "data:image/svg+xml,%3Csvg width='1300' height='768' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%238FA040'/%3E%3C/svg%3E",
-    alt: "治一郎バウムクーヘン メインビジュアル3",
+    alt: "梵天庵バウムクーヘン メインビジュアル3",
     title: "贈り物にも最適",
     subtitle: "心を込めた美味しさ"
   }
 ];
 
 export default function Hero({ 
-  title = "治一郎 - 極上のバウムクーヘン", 
+  title = "梵天庵 - 極上のバウムクーヘン", 
   subtitle = "職人の技が生み出す、しっとりとした極上の味わい",
   ctaText = "商品を見る"
 }: HeroProps) {

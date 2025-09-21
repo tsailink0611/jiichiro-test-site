@@ -1,7 +1,7 @@
 {
-  "name": "治一郎 公式オンラインショップ",
-  "short_name": "治一郎",
-  "description": "治一郎の美味しいバウムクーヘンをお届けします",
+  "name": "梵天庵 公式オンラインショップ",
+  "short_name": "梵天庵",
+  "description": "梵天庵の美味しいバウムクーヘンをお届けします",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

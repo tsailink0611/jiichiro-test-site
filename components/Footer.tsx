@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Company Info */}
           <div className="md:col-span-1">
-            <h3 className="font-serif-jp text-xl font-bold mb-4">治一郎</h3>
+            <h3 className="font-serif-jp text-xl font-bold mb-4">梵天庵</h3>
             <p className="text-sm leading-relaxed text-white/80">
               職人の技と心を込めて<br />
               一層一層丁寧に焼き上げる<br />
@@ -48,7 +48,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/20 mt-12 pt-8 text-center text-sm text-white/60">
-          <p>&copy; 2025 治一郎. All rights reserved.</p>
+          <p>&copy; 2025 梵天庵. All rights reserved.</p>
         </div>
       </div>
     </footer>
