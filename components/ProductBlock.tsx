@@ -52,24 +52,33 @@ export function ProductBlock({
 
         {/* Image with subtle hover effect */}
         <div className="relative">
-          <div className="w-full h-80 md:h-96 lg:h-[32rem] rounded-2xl shadow-lg overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center relative group">
-            {/* Subtle floating effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-stone-300/30 to-stone-500/20 group-hover:from-stone-200/40 group-hover:to-stone-400/30 transition-all duration-1000 ease-out"></div>
-
-            {/* Content */}
-            <div className="relative z-10 text-center px-8 transform group-hover:-translate-y-2 transition-transform duration-1000 ease-out">
-              <span className="text-stone-700 text-2xl md:text-3xl lg:text-4xl font-light tracking-wider">
-                {title}
-              </span>
-              <div className="mt-6 opacity-70 group-hover:opacity-100 transition-opacity duration-1000">
-                <div className="w-16 h-16 mx-auto border border-stone-400 rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-stone-500 rounded-full"></div>
+          <div className="w-full h-80 md:h-96 lg:h-[32rem] rounded-2xl shadow-lg overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 relative group">
+            {image ? (
+              <Image
+                src={image}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                {/* Fallback when no image */}
+                <div className="text-center px-8">
+                  <span className="text-stone-700 text-2xl md:text-3xl lg:text-4xl font-light tracking-wider">
+                    {title}
+                  </span>
+                  <div className="mt-6">
+                    <div className="w-16 h-16 mx-auto border border-stone-400 rounded-full flex items-center justify-center">
+                      <div className="w-3 h-3 bg-stone-500 rounded-full"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Subtle shadow enhancement */}
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-3/4 h-6 bg-stone-300/20 blur-xl group-hover:bg-stone-400/30 transition-all duration-1000 ease-out"></div>
+            {/* Overlay for hover effect */}
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           </div>
         </div>
       </div>
