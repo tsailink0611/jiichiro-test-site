@@ -13,6 +13,8 @@ export default function ProductsPage() {
     const loadContent = async () => {
       try {
         const siteContent = await ContentManagerEnhanced.getContent()
+        console.log('商品ページ: 読み込まれた商品数:', siteContent?.products?.length)
+        console.log('商品ページ: 商品一覧:', siteContent?.products)
         setContent(siteContent)
       } catch (error) {
         console.error('商品ページコンテンツ読み込みエラー:', error)
@@ -26,7 +28,13 @@ export default function ProductsPage() {
     // リアルタイム更新リスナー
     const handleContentUpdate = (event: CustomEvent) => {
       const updatedContent = event.detail
+      console.log('商品ページ: リアルタイム更新受信:', updatedContent?.products?.length, '個の商品')
       setContent(updatedContent)
+
+      // 強制的にコンテンツを再読み込み
+      setTimeout(() => {
+        loadContent()
+      }, 100)
     }
 
     window.addEventListener('content-updated', handleContentUpdate as EventListener)

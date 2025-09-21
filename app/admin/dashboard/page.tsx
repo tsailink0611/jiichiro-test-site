@@ -6,6 +6,7 @@ import { useAuthState } from '@/lib/auth'
 import { auth } from '@/lib/firebase'
 import { logout } from '@/lib/auth'
 import { ContentManagerEnhanced, type SiteContent } from '@/lib/content-manager-enhanced'
+import ImageUpload from '@/components/ImageUpload'
 
 export default function DashboardPage() {
   const { user, loading } = useAuthState()
@@ -291,9 +292,13 @@ export default function DashboardPage() {
 
       const updatedContent = { ...content, products: updatedProducts }
 
+      console.log('商品保存前: 商品数:', updatedProducts.length)
+      console.log('商品保存前: 商品一覧:', updatedProducts)
+
       await ContentManagerEnhanced.saveContent(updatedContent)
       setContent(updatedContent)
 
+      console.log('商品保存後: イベント発火前:', updatedContent.products.length)
       // リアルタイム更新イベントを発火
       window.dispatchEvent(new CustomEvent('content-updated', { detail: updatedContent }))
 
@@ -1061,29 +1066,11 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">商品画像URL</label>
-                <input
-                  type="text"
+                <label className="block text-sm font-medium text-gray-700 mb-2">商品画像</label>
+                <ImageUpload
                   value={productFormData.image}
-                  onChange={(e) => setProductFormData({...productFormData, image: e.target.value})}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                  placeholder="https://example.com/image.jpg"
+                  onChange={(imageData) => setProductFormData({...productFormData, image: imageData})}
                 />
-                {productFormData.image && (
-                  <div className="mt-3">
-                    <p className="text-sm text-gray-600 mb-2">プレビュー:</p>
-                    <div className="aspect-square bg-stone-100 rounded-lg overflow-hidden max-w-xs">
-                      <img
-                        src={productFormData.image}
-                        alt="プレビュー"
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y5ZmFmYiIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuOCpOODoeODvOOCuOOBj+OBl+OBvuOBmzwvdGV4dD48L3N2Zz4='
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
 
               <div>

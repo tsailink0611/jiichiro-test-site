@@ -377,6 +377,8 @@ export class ContentManagerEnhanced {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         const localContent = JSON.parse(stored);
+        console.log('ContentManager: LocalStorageから読み込み - 商品数:', localContent?.products?.length);
+        console.log('ContentManager: 読み込んだ商品:', localContent?.products?.map(p => p.title));
 
         // siteIdが指定されている場合は、Firestoreからも取得して比較
         if (siteId) {
@@ -410,9 +412,12 @@ export class ContentManagerEnhanced {
   // コンテンツを保存 (LocalStorage + Firestore)
   static async saveContent(content: SiteContent, siteId?: string): Promise<void> {
     content.lastUpdated = new Date().toISOString();
+    console.log('ContentManager: 保存開始 - 商品数:', content.products.length);
+    console.log('ContentManager: 保存する商品:', content.products.map(p => p.title));
 
     // LocalStorageに保存
     this.saveToLocal(content);
+    console.log('ContentManager: LocalStorage保存完了');
 
     // Firestoreに保存 (siteIdが指定されている場合)
     if (siteId) {
@@ -421,6 +426,7 @@ export class ContentManagerEnhanced {
 
     // リアルタイム更新イベントを発火
     this.dispatchUpdateEvent(content);
+    console.log('ContentManager: 保存処理完了');
   }
 
   // LocalStorageに保存
