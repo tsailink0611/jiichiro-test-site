@@ -1,9 +1,35 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { ContentManagerEnhanced, type AccessContent } from '@/lib/content-manager-enhanced'
 
 export default function AccessPage() {
+  const [accessContent, setAccessContent] = useState<AccessContent | null>(null)
+
+  useEffect(() => {
+    // コンテンツロード
+    const loadContent = async () => {
+      try {
+        const siteContent = await ContentManagerEnhanced.getContent()
+        setAccessContent(siteContent.access)
+      } catch (error) {
+        console.error('アクセスページコンテンツ読み込みエラー:', error)
+      }
+    }
+
+    loadContent()
+
+    // リアルタイム更新リスナー
+    const handleContentUpdate = (event: CustomEvent) => {
+      const updatedContent = event.detail
+      setAccessContent(updatedContent.access)
+    }
+
+    window.addEventListener('content-updated', handleContentUpdate as EventListener)
+    return () => window.removeEventListener('content-updated', handleContentUpdate as EventListener)
+  }, [])
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -12,7 +38,7 @@ export default function AccessPage() {
       <section className="pt-24 pb-20 px-8 bg-gradient-to-b from-stone-50 to-white">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-6xl md:text-7xl font-extralight text-stone-800 tracking-wider">
-            アクセス
+            {accessContent?.heroTitle || 'アクセス'}
           </h1>
           <div className="w-24 h-1 bg-stone-400 mx-auto"></div>
           <p className="text-xl text-stone-600 font-light leading-relaxed max-w-2xl mx-auto">
@@ -86,20 +112,29 @@ export default function AccessPage() {
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">住所</dt>
                     <dd className="text-xl text-stone-800">
-                      〒100-0001<br />
-                      東京都千代田区千代田1-1-1<br />
-                      CMSビル 5F
+                      {accessContent?.address?.split('\\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < (accessContent?.address?.split('\\n').length || 1) - 1 && <br />}
+                        </span>
+                      )) || (
+                        <>
+                          〒100-0001<br />
+                          東京都千代田区千代田1-1-1<br />
+                          CMSビル 5F
+                        </>
+                      )}
                     </dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">電話番号</dt>
-                    <dd className="text-xl text-stone-800">03-1234-5678</dd>
+                    <dd className="text-xl text-stone-800">{accessContent?.phone || '03-1234-5678'}</dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">営業時間</dt>
                     <dd className="text-xl text-stone-800">
-                      平日 9:00 - 18:00<br />
-                      <span className="text-stone-500 text-base">土日祝日は休業</span>
+                      {accessContent?.hours || '平日 9:00 - 18:00'}<br />
+                      <span className="text-stone-500 text-base">{accessContent?.holidays || '土日祝日は休業'}</span>
                     </dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">

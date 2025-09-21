@@ -1,9 +1,35 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { ContentManagerEnhanced, type CompanyContent } from '@/lib/content-manager-enhanced'
 
 export default function CompanyPage() {
+  const [companyContent, setCompanyContent] = useState<CompanyContent | null>(null)
+
+  useEffect(() => {
+    // コンテンツロード
+    const loadContent = async () => {
+      try {
+        const siteContent = await ContentManagerEnhanced.getContent()
+        setCompanyContent(siteContent.company)
+      } catch (error) {
+        console.error('会社概要ページコンテンツ読み込みエラー:', error)
+      }
+    }
+
+    loadContent()
+
+    // リアルタイム更新リスナー
+    const handleContentUpdate = (event: CustomEvent) => {
+      const updatedContent = event.detail
+      setCompanyContent(updatedContent.company)
+    }
+
+    window.addEventListener('content-updated', handleContentUpdate as EventListener)
+    return () => window.removeEventListener('content-updated', handleContentUpdate as EventListener)
+  }, [])
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -12,7 +38,7 @@ export default function CompanyPage() {
       <section className="pt-24 pb-20 px-8 bg-gradient-to-b from-stone-50 to-white">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-6xl md:text-7xl font-extralight text-stone-800 tracking-wider">
-            会社概要
+            {companyContent?.heroTitle || '会社概要'}
           </h1>
           <div className="w-24 h-1 bg-stone-400 mx-auto"></div>
           <p className="text-xl text-stone-600 font-light leading-relaxed max-w-2xl mx-auto">
@@ -32,11 +58,11 @@ export default function CompanyPage() {
                 <div className="space-y-6">
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">社名</dt>
-                    <dd className="text-xl text-stone-800">CMSサイトスタジオ株式会社</dd>
+                    <dd className="text-xl text-stone-800">{companyContent?.companyName || 'CMSサイトスタジオ株式会社'}</dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">設立</dt>
-                    <dd className="text-xl text-stone-800">2024年4月</dd>
+                    <dd className="text-xl text-stone-800">{companyContent?.establishedYear || '2024年4月'}</dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">資本金</dt>
@@ -44,7 +70,7 @@ export default function CompanyPage() {
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">従業員数</dt>
-                    <dd className="text-xl text-stone-800">25名</dd>
+                    <dd className="text-xl text-stone-800">{companyContent?.employees || '25名'}</dd>
                   </div>
                   <div className="border-b border-stone-200 pb-4">
                     <dt className="text-stone-500 text-sm font-medium mb-2">事業内容</dt>
@@ -60,24 +86,19 @@ export default function CompanyPage() {
                 <h2 className="text-4xl font-light text-stone-800 mb-8">企業理念</h2>
                 <div className="space-y-8">
                   <div className="p-8 bg-stone-50 rounded-lg">
-                    <h3 className="text-2xl font-medium text-stone-800 mb-4">Mission</h3>
+                    <h3 className="text-2xl font-medium text-stone-800 mb-4">企業理念</h3>
                     <p className="text-stone-600 leading-relaxed">
-                      シンプルで美しいコンテンツ管理体験を、
-                      すべての人に届ける
-                    </p>
-                  </div>
-                  <div className="p-8 bg-stone-50 rounded-lg">
-                    <h3 className="text-2xl font-medium text-stone-800 mb-4">Vision</h3>
-                    <p className="text-stone-600 leading-relaxed">
-                      技術的複雑さを取り除き、
-                      創造性に集中できる世界を実現する
-                    </p>
-                  </div>
-                  <div className="p-8 bg-stone-50 rounded-lg">
-                    <h3 className="text-2xl font-medium text-stone-800 mb-4">Values</h3>
-                    <p className="text-stone-600 leading-relaxed">
-                      シンプリシティ、ユーザビリティ、
-                      そして継続的な革新
+                      {companyContent?.philosophy?.split('\\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < (companyContent?.philosophy?.split('\\n').length || 1) - 1 && <br />}
+                        </span>
+                      )) || (
+                        <>
+                          シンプルで美しいコンテンツ管理体験を、<br />
+                          すべての人に届ける
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -140,21 +161,29 @@ export default function CompanyPage() {
             </div>
 
             <div className="space-y-6 text-lg text-stone-600 leading-relaxed">
-              <p>
-                私たちは「シンプルであること」を最も大切にしています。
-                技術は複雑になりがちですが、ユーザーが触れる部分は
-                可能な限りシンプルでなければならないと考えています。
-              </p>
-              <p>
-                CMSサイトスタジオは、コンテンツ制作者が技術的な制約に
-                悩まされることなく、創造性に集中できる環境を提供します。
-                私たちの使命は、すべての人がデジタルコンテンツを
-                美しく、効率的に管理できる世界を実現することです。
-              </p>
-              <p>
-                これからも、ユーザーの声に耳を傾け、
-                継続的な改善と革新を続けてまいります。
-              </p>
+              {companyContent?.representativeMessage?.split('\\n').map((paragraph, index) => (
+                <p key={index}>
+                  {paragraph}
+                </p>
+              )) || (
+                <>
+                  <p>
+                    私たちは「シンプルであること」を最も大切にしています。
+                    技術は複雑になりがちですが、ユーザーが触れる部分は
+                    可能な限りシンプルでなければならないと考えています。
+                  </p>
+                  <p>
+                    CMSサイトスタジオは、コンテンツ制作者が技術的な制約に
+                    悩まされることなく、創造性に集中できる環境を提供します。
+                    私たちの使命は、すべての人がデジタルコンテンツを
+                    美しく、効率的に管理できる世界を実現することです。
+                  </p>
+                  <p>
+                    これからも、ユーザーの声に耳を傾け、
+                    継続的な改善と革新を続けてまいります。
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

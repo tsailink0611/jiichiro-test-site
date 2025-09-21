@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { ContentManagerEnhanced, type ContactContent } from '@/lib/content-manager-enhanced'
 
 export default function ContactPage() {
+  const [contactContent, setContactContent] = useState<ContactContent | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,6 +28,29 @@ export default function ContactPage() {
     }))
   }
 
+  useEffect(() => {
+    // コンテンツロード
+    const loadContent = async () => {
+      try {
+        const siteContent = await ContentManagerEnhanced.getContent()
+        setContactContent(siteContent.contact)
+      } catch (error) {
+        console.error('お問い合わせページコンテンツ読み込みエラー:', error)
+      }
+    }
+
+    loadContent()
+
+    // リアルタイム更新リスナー
+    const handleContentUpdate = (event: CustomEvent) => {
+      const updatedContent = event.detail
+      setContactContent(updatedContent.contact)
+    }
+
+    window.addEventListener('content-updated', handleContentUpdate as EventListener)
+    return () => window.removeEventListener('content-updated', handleContentUpdate as EventListener)
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -34,7 +59,7 @@ export default function ContactPage() {
       <section className="pt-24 pb-20 px-8 bg-gradient-to-b from-stone-50 to-white">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-6xl md:text-7xl font-extralight text-stone-800 tracking-wider">
-            お問い合わせ
+            {contactContent?.heroTitle || 'お問い合わせ'}
           </h1>
           <div className="w-24 h-1 bg-stone-400 mx-auto"></div>
           <p className="text-xl text-stone-600 font-light leading-relaxed max-w-2xl mx-auto">
@@ -144,8 +169,8 @@ export default function ContactPage() {
                       </div>
                       <h3 className="text-xl font-medium text-stone-800">お電話でのお問い合わせ</h3>
                     </div>
-                    <p className="text-2xl font-medium text-stone-800 mb-2">03-1234-5678</p>
-                    <p className="text-stone-600">受付時間：平日 9:00-18:00</p>
+                    <p className="text-2xl font-medium text-stone-800 mb-2">{contactContent?.phone || '03-1234-5678'}</p>
+                    <p className="text-stone-600">受付時間：{contactContent?.phoneHours || '平日 9:00-18:00'}</p>
                   </div>
 
                   {/* メール */}
@@ -156,7 +181,7 @@ export default function ContactPage() {
                       </div>
                       <h3 className="text-xl font-medium text-stone-800">メールでのお問い合わせ</h3>
                     </div>
-                    <p className="text-xl text-stone-800 mb-2">info@cms-site-studio.com</p>
+                    <p className="text-xl text-stone-800 mb-2">{contactContent?.email || 'info@cms-site-studio.com'}</p>
                     <p className="text-stone-600">24時間受付（返信は営業時間内）</p>
                   </div>
 
@@ -169,9 +194,18 @@ export default function ContactPage() {
                       <h3 className="text-xl font-medium text-stone-800">所在地</h3>
                     </div>
                     <p className="text-stone-800 mb-2">
-                      〒100-0001<br />
-                      東京都千代田区千代田1-1-1<br />
-                      CMSビル 5F
+                      {contactContent?.address?.split('\\n').map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          {index < (contactContent?.address?.split('\\n').length || 1) - 1 && <br />}
+                        </span>
+                      )) || (
+                        <>
+                          〒100-0001<br />
+                          東京都千代田区千代田1-1-1<br />
+                          CMSビル 5F
+                        </>
+                      )}
                     </p>
                     <p className="text-stone-600">
                       最寄駅：JR東京駅 徒歩5分<br />

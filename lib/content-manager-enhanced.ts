@@ -106,40 +106,148 @@ export const defaultContent: SiteContent = {
   },
   products: [
     {
-      id: "modern-template",
-      title: "モダンテンプレート",
-      description: `最新のデザイントレンドを取り入れたテンプレート。
+      id: "sakura-mochi",
+      title: "桜餅",
+      description: `春の代表的な和菓子。関西風の道明寺粉を使用した上品な仕上がり。
 
-レスポンシブデザインで、どのデバイスでも美しく表示されます。
+桜の葉の塩気が餡の甘さを引き立て、季節の美しさを表現します。
 
-ビジネス、ポートフォリオ、ブログなど様々な用途に対応。`,
-      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='white' text-anchor='middle' dy='0.3em'%3Eモダンテンプレート%3C/text%3E%3C/svg%3E",
-      cta: "テンプレートを見る",
+3月から4月限定の特別な逸品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23ffb3d9'/%3E%3Ctext x='50%25' y='50%25' font-size='36' fill='%23d63384' text-anchor='middle' dy='0.3em'%3E桜餅%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
       reverse: false
     },
     {
-      id: "minimal-template",
-      title: "ミニマルテンプレート",
-      description: `シンプルで洗練されたデザインのテンプレート。
+      id: "dorayaki",
+      title: "どら焼き",
+      description: `ふんわりとした生地に粒あんをたっぷりと挟んだ定番商品。
 
-コンテンツに集中できる、余計な装飾を排除したスタイル。
+職人が一枚一枚丁寧に焼き上げる生地は、しっとりとした食感。
 
-高速表示と優れた読みやすさを実現。`,
-      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23f093fb'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='white' text-anchor='middle' dy='0.3em'%3Eミニマルテンプレート%3C/text%3E%3C/svg%3E",
-      cta: "テンプレートを見る",
+老若男女問わず愛される梵天庵の人気No.1商品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23ffc107'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='%23856404' text-anchor='middle' dy='0.3em'%3Eどら焼き%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
       reverse: true
     },
     {
-      id: "business-template",
-      title: "ビジネステンプレート",
-      description: `企業サイトに最適化されたプロフェッショナルテンプレート。
+      id: "mizu-yokan",
+      title: "水羊羹",
+      description: `夏の涼を運ぶ透明感のある羊羹。つるりとした喉越しが特徴。
 
-信頼性と実績をアピールできるデザイン要素が充実。
+厳選した寒天と小豆で作る上品な甘さは、暑い季節にぴったり。
 
-お問い合わせフォームやサービス紹介に特化。`,
-      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%2343cea2'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='white' text-anchor='middle' dy='0.3em'%3Eビジネステンプレート%3C/text%3E%3C/svg%3E",
-      cta: "テンプレートを見る",
+冷やしてお召し上がりいただくと一層美味しさが引き立ちます。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%2320c997'/%3E%3Ctext x='50%25' y='50%25' font-size='30' fill='%23146c43' text-anchor='middle' dy='0.3em'%3E水羊羹%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
       reverse: false
+    },
+    {
+      id: "kuri-kinton",
+      title: "栗きんとん",
+      description: `秋の味覚、栗を贅沢に使用した季節限定の和菓子。
+
+丁寧に裏ごしした栗と上質な砂糖のみで仕上げる究極のシンプルさ。
+
+口の中でほろりと崩れる食感と栗本来の甘さをお楽しみください。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23fd7e14'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='%23a0440e' text-anchor='middle' dy='0.3em'%3E栗きんとん%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: true
+    },
+    {
+      id: "daifuku",
+      title: "大福",
+      description: `もちもちの求肥にたっぷりの餡を包んだ伝統的な和菓子。
+
+つきたてのようなお餅の食感と、甘さ控えめの粒あんが絶妙。
+
+当日限りの美味しさを是非お楽しみください。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' font-size='36' fill='%23495057' text-anchor='middle' dy='0.3em'%3E大福%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: false
+    },
+    {
+      id: "kashiwa-mochi",
+      title: "柏餅",
+      description: `端午の節句に欠かせない縁起の良い和菓子。
+
+柏の葉に包まれた上新粉のお餅は、優しい甘さのこしあん入り。
+
+5月限定の季節商品として、ご家族でお楽しみいただけます。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%2398fb98'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='%232d5a27' text-anchor='middle' dy='0.3em'%3E柏餅%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: true
+    },
+    {
+      id: "monaka",
+      title: "最中",
+      description: `香ばしい最中の皮に餡をたっぷりと詰めた上品な和菓子。
+
+パリッとした食感の皮と、なめらかな餡のコントラストが楽しめます。
+
+贈り物にも最適な、梵天庵を代表する銘菓です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23ddd6fe'/%3E%3Ctext x='50%25' y='50%25' font-size='36' fill='%235b21b6' text-anchor='middle' dy='0.3em'%3E最中%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: false
+    },
+    {
+      id: "taiyaki",
+      title: "鯛焼き",
+      description: `愛らしい鯛の形をした、昔ながらの人気和菓子。
+
+一匹焼きで作る薄皮にぎっしりと詰まった餡が自慢。
+
+焼きたての温かさと香ばしさをお楽しみください。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23fbbf24'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='%23b45309' text-anchor='middle' dy='0.3em'%3E鯛焼き%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: true
+    },
+    {
+      id: "warabi-mochi",
+      title: "わらび餅",
+      description: `プルプルとした食感が特徴的な夏の和菓子。
+
+本わらび粉を使用した贅沢な仕上がりで、上質なきな粉をたっぷりと。
+
+冷たく冷やして召し上がる涼感たっぷりの逸品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23c2f0c2'/%3E%3Ctext x='50%25' y='50%25' font-size='28' fill='%23166534' text-anchor='middle' dy='0.3em'%3Eわらび餅%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: false
+    },
+    {
+      id: "imagawayaki",
+      title: "今川焼き",
+      description: `外はカリッと中はふんわりとした生地の中に餡がたっぷり。
+
+焼きたてのアツアツを頬張る幸せをお届けします。
+
+午後のおやつや小腹が空いた時に最適な一品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23f59e0b'/%3E%3Ctext x='50%25' y='50%25' font-size='26' fill='%2392400e' text-anchor='middle' dy='0.3em'%3E今川焼き%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: true
+    },
+    {
+      id: "zenzai",
+      title: "ぜんざい",
+      description: `厳選した小豆をじっくりと炊き上げた温かいスイーツ。
+
+ふっくらとした白玉と小豆の優しい甘さが心も体も温めます。
+
+寒い季節にほっと一息つける、心温まる逸品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23dc2626'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='%23fecaca' text-anchor='middle' dy='0.3em'%3Eぜんざい%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: false
+    },
+    {
+      id: "kuzu-mochi",
+      title: "葛餅",
+      description: `滑らかで上品な食感の葛粉を使用した夏限定の和菓子。
+
+透明感のある美しい見た目と、つるりとした喉越しが特徴。
+
+黒蜜ときな粉でお召し上がりいただく涼やかな逸品です。`,
+      image: "data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23e0f2fe'/%3E%3Ctext x='50%25' y='50%25' font-size='32' fill='%23164e63' text-anchor='middle' dy='0.3em'%3E葛餅%3C/text%3E%3C/svg%3E",
+      cta: "詳細を見る",
+      reverse: true
     }
   ],
   news: [
