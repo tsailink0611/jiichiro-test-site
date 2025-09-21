@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: '治一郎 公式オンラインショップ',
-  description: '治一郎の美味しいバウムクーヘンをお届けします',
+  title: 'CMSサイトスタジオ - ヘッドレスCMS',
+  description: 'シンプルで高速なヘッドレスCMSシステム',
   icons: {
     icon: '/favicon.ico',
   },

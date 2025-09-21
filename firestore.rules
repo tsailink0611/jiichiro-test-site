@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ユーザーは自分のデータのみアクセス可能
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // サイトデータは所有者のみアクセス可能
+    match /sites/{siteId} {
+      allow read, write: if request.auth != null &&
+        request.auth.uid == resource.data.ownerId;
+      allow create: if request.auth != null &&
+        request.auth.uid == request.resource.data.ownerId;
+    }
+
+    // コンテンツデータは対応サイトの所有者のみアクセス可能
+    match /content/{siteId} {
+      allow read, write: if request.auth != null &&
+        exists(/databases/$(database)/documents/sites/$(siteId)) &&
+        get(/databases/$(database)/documents/sites/$(siteId)).data.ownerId == request.auth.uid;
+    }
+
+    // その他のドキュメントはデフォルトで拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
