@@ -23,7 +23,6 @@ export default function Header() {
             <a href="/company" className="text-gray-700 hover:text-stone-800 transition-all duration-300 hover:underline underline-offset-4 font-medium">会社概要</a>
             <a href="/contact" className="text-gray-700 hover:text-stone-800 transition-all duration-300 hover:underline underline-offset-4 font-medium">お問い合わせ</a>
             <a href="/access" className="text-gray-700 hover:text-stone-800 transition-all duration-300 hover:underline underline-offset-4 font-medium">アクセス</a>
-            <a href="/admin" className="text-gray-700 hover:text-stone-800 transition-all duration-300 hover:underline underline-offset-4 font-medium">管理画面</a>
           </nav>
 
           {/* Mobile Menu */}
@@ -49,7 +48,6 @@ export default function Header() {
               <a href="/company" className="text-gray-700 hover:text-stone-800 transition-colors py-2">会社概要</a>
               <a href="/contact" className="text-gray-700 hover:text-stone-800 transition-colors py-2">お問い合わせ</a>
               <a href="/access" className="text-gray-700 hover:text-stone-800 transition-colors py-2">アクセス</a>
-              <a href="/admin" className="text-gray-700 hover:text-stone-800 transition-colors py-2">管理画面</a>
             </nav>
           </div>
         )}
