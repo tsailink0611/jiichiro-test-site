@@ -1,27 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 最小限の設定でトラブルシューティング
   images: {
     remotePatterns: [],
   },
-  experimental: {
-    optimizePackageImports: ['swiper']
+  // 開発時の問題を解決するための設定
+  onDemandEntries: {
+    // ページがメモリに保持される時間を延長
+    maxInactiveAge: 25 * 1000,
+    // 同時に保持されるページ数
+    pagesBufferLength: 2,
   },
-  webpack: (config, { dev, isServer }) => {
-    // 開発時のホットリロード改善
-    if (dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendor: false,
-        },
-      }
-    }
-    return config
-  },
-  // 開発時のファストリフレッシュを安定化
-  reactStrictMode: true,
-  swcMinify: true,
+  // 厳密なモードを無効化（一時的）
+  reactStrictMode: false,
+  // SWCの最適化を無効化（一時的）
+  swcMinify: false,
 }
 
 module.exports = nextConfig

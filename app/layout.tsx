@@ -16,6 +16,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Service Worker クリア
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  for(let registration of registrations) {
+                    registration.unregister();
+                  }
+                });
+              }
+              // キャッシュクリア
+              if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                  cacheNames.forEach(function(cacheName) {
+                    caches.delete(cacheName);
+                  });
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-dvh bg-white font-sans-jp">{children}</body>
     </html>
   )
