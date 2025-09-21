@@ -378,7 +378,7 @@ export class ContentManagerEnhanced {
       if (stored) {
         const localContent = JSON.parse(stored);
         console.log('ContentManager: LocalStorageから読み込み - 商品数:', localContent?.products?.length);
-        console.log('ContentManager: 読み込んだ商品:', localContent?.products?.map(p => p.title));
+        console.log('ContentManager: 読み込んだ商品:', localContent?.products?.map((p: ProductContent) => p.title));
 
         // siteIdが指定されている場合は、Firestoreからも取得して比較
         if (siteId) {
@@ -413,7 +413,7 @@ export class ContentManagerEnhanced {
   static async saveContent(content: SiteContent, siteId?: string): Promise<void> {
     content.lastUpdated = new Date().toISOString();
     console.log('ContentManager: 保存開始 - 商品数:', content.products.length);
-    console.log('ContentManager: 保存する商品:', content.products.map(p => p.title));
+    console.log('ContentManager: 保存する商品:', content.products.map((p: ProductContent) => p.title));
 
     // LocalStorageに保存
     this.saveToLocal(content);

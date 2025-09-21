@@ -242,7 +242,11 @@ export default function DashboardPage() {
 
   const handleEditProduct = (index: number) => {
     if (content && content.products[index]) {
-      setProductFormData(content.products[index])
+      const product = content.products[index]
+      setProductFormData({
+        ...product,
+        reverse: product.reverse || false  // undefinedの場合はfalseにする
+      })
       setSelectedProductIndex(index)
       setEditingPage('edit-product')
     }
