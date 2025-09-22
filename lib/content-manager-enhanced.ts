@@ -1,7 +1,8 @@
-// 拡張版コンテンツ管理システム - LocalStorage + Firestore連携
+// 拡張版コンテンツ管理システム - LocalStorage + Cloud Sync + Firestore連携
 
 import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore'
 import { firestore } from './firebase'
+import { CloudSync } from './cloud-sync'
 
 export interface HeroContent {
   title: string;
@@ -365,7 +366,7 @@ export const defaultContent: SiteContent = {
 export class ContentManagerEnhanced {
   private static STORAGE_KEY = 'cms-site-studio-content';
 
-  // コンテンツを取得 (LocalStorage優先、Firestoreフォールバック)
+  // コンテンツを取得 (Cloud Sync優先、LocalStorageフォールバック)
   static async getContent(siteId?: string): Promise<SiteContent> {
     // ブラウザ環境でない場合はデフォルトコンテンツを返す
     if (typeof window === 'undefined') {
@@ -373,12 +374,21 @@ export class ContentManagerEnhanced {
     }
 
     try {
-      // 1. LocalStorageから取得を試みる
+      // 1. Cloud Syncから最新データを取得
+      const cloudContent = await CloudSync.getFromCloud();
+      if (cloudContent) {
+        console.log('ContentManager: Cloud Syncから読み込み - 商品数:', cloudContent?.products?.length);
+        console.log('ContentManager: 読み込んだ商品:', cloudContent?.products?.map((p: ProductContent) => p.title));
+        // LocalStorageも更新して次回の高速化
+        this.saveToLocal(cloudContent);
+        return cloudContent;
+      }
+
+      // 2. LocalStorageから取得を試みる（フォールバック）
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         const localContent = JSON.parse(stored);
-        console.log('ContentManager: LocalStorageから読み込み - 商品数:', localContent?.products?.length);
-        console.log('ContentManager: 読み込んだ商品:', localContent?.products?.map((p: ProductContent) => p.title));
+        console.log('ContentManager: LocalStorageから読み込み（フォールバック） - 商品数:', localContent?.products?.length);
 
         // siteIdが指定されている場合は、Firestoreからも取得して比較
         if (siteId) {
@@ -393,7 +403,7 @@ export class ContentManagerEnhanced {
         return localContent;
       }
 
-      // 2. LocalStorageにない場合、Firestoreから取得
+      // 3. LocalStorageにない場合、Firestoreから取得
       if (siteId) {
         const firestoreContent = await this.getFromFirestore(siteId);
         if (firestoreContent) {
@@ -405,21 +415,29 @@ export class ContentManagerEnhanced {
       console.error('Failed to load content:', error);
     }
 
-    // 3. どちらからも取得できない場合はデフォルトを返す
+    // 4. どこからも取得できない場合はデフォルトを返す
     return defaultContent;
   }
 
-  // コンテンツを保存 (LocalStorage + Firestore)
+  // コンテンツを保存 (Cloud Sync + LocalStorage + Firestore)
   static async saveContent(content: SiteContent, siteId?: string): Promise<void> {
     content.lastUpdated = new Date().toISOString();
     console.log('ContentManager: 保存開始 - 商品数:', content.products.length);
     console.log('ContentManager: 保存する商品:', content.products.map((p: ProductContent) => p.title));
 
-    // LocalStorageに保存
+    // 1. Cloud Syncに保存（最優先）
+    const cloudSaved = await CloudSync.saveToCloud(content);
+    if (cloudSaved) {
+      console.log('ContentManager: Cloud Sync保存完了');
+    } else {
+      console.warn('ContentManager: Cloud Sync保存失敗、LocalStorageのみ使用');
+    }
+
+    // 2. LocalStorageに保存
     this.saveToLocal(content);
     console.log('ContentManager: LocalStorage保存完了');
 
-    // Firestoreに保存 (siteIdが指定されている場合)
+    // 3. Firestoreに保存 (siteIdが指定されている場合)
     if (siteId) {
       await this.saveToFirestore(content, siteId);
     }
