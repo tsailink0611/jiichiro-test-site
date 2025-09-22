@@ -15,52 +15,70 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const action = url.searchParams.get('action')
 
+  console.log('📡 Sync API GET - action:', action);
+
   try {
     if (action === 'status') {
-      return NextResponse.json({
+      const status = {
         lastUpdated: memoryStorage.lastUpdated,
-        needsSync: memoryStorage.content !== null
-      })
+        needsSync: memoryStorage.content !== null,
+        hasContent: memoryStorage.content !== null
+      };
+      console.log('📋 Sync API Status:', status);
+      return NextResponse.json(status)
     }
 
     if (action === 'get') {
-      return NextResponse.json({
+      const result = {
         content: memoryStorage.content,
         lastUpdated: memoryStorage.lastUpdated
-      })
+      };
+      console.log('📎 Sync API GET - returning content:', {
+        hasContent: result.content !== null,
+        productCount: result.content?.products?.length || 0
+      });
+      return NextResponse.json(result)
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
   } catch (error) {
-    console.error('Sync GET error:', error)
+    console.error('❌ Sync GET error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🚀 Sync API POST - receiving data');
     const body = await request.json()
     const { content } = body as { content: SiteContent }
 
     if (!content) {
+      console.error('❌ Sync API POST - No content provided');
       return NextResponse.json({ error: 'No content provided' }, { status: 400 })
     }
+
+    console.log('📎 Sync API POST - content received:', {
+      products: content.products?.length || 0,
+      productTitles: content.products?.map(p => p.title) || []
+    });
 
     // メモリに保存
     memoryStorage.content = content
     memoryStorage.lastUpdated = new Date().toISOString()
 
-    console.log('Content synced to cloud:', {
+    console.log('✅ Content synced to cloud:', {
       products: content.products?.length || 0,
       lastUpdated: memoryStorage.lastUpdated
     })
 
     return NextResponse.json({
       success: true,
-      lastUpdated: memoryStorage.lastUpdated
+      lastUpdated: memoryStorage.lastUpdated,
+      productCount: content.products?.length || 0
     })
   } catch (error) {
-    console.error('Sync POST error:', error)
+    console.error('❌ Sync POST error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

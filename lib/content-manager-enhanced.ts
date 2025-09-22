@@ -374,14 +374,18 @@ export class ContentManagerEnhanced {
     }
 
     try {
+      console.log('ContentManager: データ読み込み開始');
+
       // 1. Cloud Syncから最新データを取得
       const cloudContent = await CloudSync.getFromCloud();
       if (cloudContent) {
-        console.log('ContentManager: Cloud Syncから読み込み - 商品数:', cloudContent?.products?.length);
-        console.log('ContentManager: 読み込んだ商品:', cloudContent?.products?.map((p: ProductContent) => p.title));
+        console.log('✅ ContentManager: Cloud Syncから読み込み成功 - 商品数:', cloudContent?.products?.length);
+        console.log('✅ ContentManager: 読み込んだ商品:', cloudContent?.products?.map((p: ProductContent) => p.title));
         // LocalStorageも更新して次回の高速化
         this.saveToLocal(cloudContent);
         return cloudContent;
+      } else {
+        console.log('⚠️ ContentManager: Cloud Syncからデータなし、LocalStorageを確認');
       }
 
       // 2. LocalStorageから取得を試みる（フォールバック）
@@ -422,15 +426,16 @@ export class ContentManagerEnhanced {
   // コンテンツを保存 (Cloud Sync + LocalStorage + Firestore)
   static async saveContent(content: SiteContent, siteId?: string): Promise<void> {
     content.lastUpdated = new Date().toISOString();
-    console.log('ContentManager: 保存開始 - 商品数:', content.products.length);
-    console.log('ContentManager: 保存する商品:', content.products.map((p: ProductContent) => p.title));
+    console.log('🚀 ContentManager: 保存開始 - 商品数:', content.products.length);
+    console.log('🚀 ContentManager: 保存する商品:', content.products.map((p: ProductContent) => p.title));
 
     // 1. Cloud Syncに保存（最優先）
+    console.log('📡 Cloud Syncへの保存を試行中...');
     const cloudSaved = await CloudSync.saveToCloud(content);
     if (cloudSaved) {
-      console.log('ContentManager: Cloud Sync保存完了');
+      console.log('✅ ContentManager: Cloud Sync保存完了');
     } else {
-      console.warn('ContentManager: Cloud Sync保存失敗、LocalStorageのみ使用');
+      console.error('❌ ContentManager: Cloud Sync保存失敗、LocalStorageのみ使用');
     }
 
     // 2. LocalStorageに保存
