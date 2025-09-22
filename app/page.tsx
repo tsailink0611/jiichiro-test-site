@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Hero from "@/components/Hero";
+import HeroLuxury from "@/components/HeroLuxury";
 import NewsSection from "@/components/NewsSection";
 import { ProductBlock } from "@/components/ProductBlock";
 import Header from "@/components/Header";
@@ -56,10 +56,10 @@ export default function HomePage() {
       <Header />
 
       {/* Dynamic Hero Section */}
-      <Hero
-        title={content.hero?.title || "CMSサイトスタジオ"}
-        subtitle={content.hero?.subtitle || "シンプルで高速なヘッドレスCMSシステム"}
-        ctaText={content.hero?.ctaText || "管理画面を見る"}
+      <HeroLuxury
+        title={content.hero?.title || "茶寮 梵天庵"}
+        subtitle={content.hero?.subtitle || "四季を纏う、職人の心\n受け継がれし伝統の味わい"}
+        ctaText={content.hero?.ctaText || "商品を見る"}
       />
 
       {/* News Section */}
@@ -68,16 +68,18 @@ export default function HomePage() {
       )}
 
       {/* Dynamic Product Sections */}
-      {content.products && content.products.map((product, index) => (
-        <ProductBlock
-          key={product.id || index}
-          title={product.title}
-          description={product.description}
-          image={product.image}
-          cta={product.cta}
-          reverse={product.reverse}
-        />
-      ))}
+      <div id="products">
+        {content.products && content.products.map((product, index) => (
+          <ProductBlock
+            key={product.id || index}
+            title={product.title}
+            description={product.description}
+            image={product.image}
+            cta={product.cta}
+            reverse={product.reverse}
+          />
+        ))}
+      </div>
 
       <Footer />
     </div>

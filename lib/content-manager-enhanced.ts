@@ -101,9 +101,9 @@ export interface SiteContent {
 // 梵天庵用のデフォルトコンテンツ
 export const defaultContent: SiteContent = {
   hero: {
-    title: "梵天庵 - デモコンテンツ",
-    subtitle: "シンプルで直感的なコンテンツ管理システム",
-    ctaText: "管理画面を見る"
+    title: "茶寮 梵天庵",
+    subtitle: "四季を纏う、職人の心\n受け継がれし伝統の味わい",
+    ctaText: "商品を見る"
   },
   products: [
     {
