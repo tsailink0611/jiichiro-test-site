@@ -15,11 +15,11 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
   const [ctaVisible, setCtaVisible] = useState(false)
 
   useEffect(() => {
-    // 段階的なアニメーション
-    const timer1 = setTimeout(() => setIsVisible(true), 300)
-    const timer2 = setTimeout(() => setTitleVisible(true), 800)
-    const timer3 = setTimeout(() => setSubtitleVisible(true), 1400)
-    const timer4 = setTimeout(() => setCtaVisible(true), 2000)
+    // ゆったりとした上品なアニメーション
+    const timer1 = setTimeout(() => setIsVisible(true), 500)
+    const timer2 = setTimeout(() => setTitleVisible(true), 1000)
+    const timer3 = setTimeout(() => setSubtitleVisible(true), 2500)
+    const timer4 = setTimeout(() => setCtaVisible(true), 4000)
 
     return () => {
       clearTimeout(timer1)
@@ -35,8 +35,9 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 和風背景アニメーション */}
       <div className="absolute inset-0">
-        {/* グラデーション背景 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-emerald-900 to-slate-900"></div>
+        {/* グラスモーフィズム背景 */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-700/40 via-emerald-800/30 to-stone-800/40"></div>
+        <div className="absolute inset-0 backdrop-blur-sm bg-slate-900/20"></div>
 
         {/* 和風パターン */}
         <div className="absolute inset-0 opacity-5">
@@ -47,30 +48,31 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
 
         {/* 浮遊する和風エレメント */}
         <div className="absolute inset-0">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className={`absolute w-2 h-2 bg-emerald-300 rounded-full opacity-20 animate-float-${i % 3 + 1}`}
+              className={`absolute w-1 h-1 bg-stone-300/30 rounded-full opacity-40 animate-float-${i % 3 + 1}`}
               style={{
-                left: `${20 + i * 15}%`,
-                top: `${30 + (i % 3) * 20}%`,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${4 + i % 3}s`
+                left: `${25 + i * 20}%`,
+                top: `${35 + (i % 2) * 25}%`,
+                animationDelay: `${i * 1.5}s`,
+                animationDuration: `${6 + i % 2}s`
               }}
             ></div>
           ))}
         </div>
 
-        {/* 微細な雪のようなエフェクト */}
+        {/* 微細な光の粒子 */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-10 animate-snowfall"
+              className="absolute w-px h-px bg-stone-300 rounded-full opacity-20 animate-sparkle"
               style={{
                 left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 10}s`,
-                animationDuration: `${8 + Math.random() * 4}s`
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 8}s`,
+                animationDuration: `${12 + Math.random() * 6}s`
               }}
             ></div>
           ))}
@@ -80,48 +82,52 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
       {/* コンテンツ */}
       <div className="relative z-10 text-center px-8 max-w-4xl mx-auto">
         {/* タイトル */}
-        <h1 className={`text-white mb-8 transition-all duration-2000 transform ${
-          titleVisible
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-12'
-        }`}>
+        <h1 className="text-white mb-8">
           <span className="block text-6xl md:text-7xl lg:text-8xl font-extralight tracking-widest mb-4 leading-tight">
-            {title.split(' ').map((char, index) => (
-              <span
-                key={index}
-                className="inline-block animate-titleFade"
-                style={{
-                  animationDelay: `${titleVisible ? index * 0.1 : 0}s`,
-                  animationFillMode: 'both'
-                }}
-              >
-                {char}
-                {index < title.split(' ').length - 1 && <span className="inline-block w-8"></span>}
-              </span>
-            ))}
+            {title.split('').map((char, index) => {
+              if (char === ' ') {
+                return <span key={index} className="inline-block w-8"></span>
+              }
+              return (
+                <span
+                  key={index}
+                  className={`inline-block transition-all duration-1000 ease-out transform ${
+                    titleVisible
+                      ? 'opacity-100 translate-y-0 scale-100'
+                      : 'opacity-0 translate-y-8 scale-95'
+                  }`}
+                  style={{
+                    transitionDelay: `${titleVisible ? index * 0.08 + 0.5 : 0}s`,
+                    filter: titleVisible ? 'none' : 'blur(2px)'
+                  }}
+                >
+                  {char}
+                </span>
+              )
+            })}
           </span>
         </h1>
 
         {/* 装飾線 */}
-        <div className={`flex justify-center mb-12 transition-all duration-1500 delay-1000 ${
+        <div className={`flex justify-center mb-12 transition-all duration-2000 ease-out ${
           titleVisible ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-        }`}>
-          <div className="h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent w-64"></div>
+        }`} style={{ transitionDelay: '1.5s' }}>
+          <div className="h-px bg-gradient-to-r from-transparent via-stone-400/60 to-transparent w-64"></div>
         </div>
 
         {/* サブタイトル */}
-        <div className={`text-emerald-100 mb-16 transition-all duration-1500 transform ${
-          subtitleVisible
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-8'
-        }`}>
+        <div className="text-stone-200/90 mb-16">
           {subtitleLines.map((line, index) => (
             <p
               key={index}
-              className={`text-2xl md:text-3xl lg:text-4xl font-light tracking-wide leading-relaxed mb-4 animate-subtitleFade`}
+              className={`text-2xl md:text-3xl lg:text-4xl font-light tracking-wide leading-relaxed mb-4 transition-all duration-1500 ease-out transform ${
+                subtitleVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-6'
+              }`}
               style={{
-                animationDelay: `${subtitleVisible ? index * 0.3 + 0.5 : 0}s`,
-                animationFillMode: 'both'
+                transitionDelay: `${subtitleVisible ? index * 0.4 + 2 : 0}s`,
+                filter: subtitleVisible ? 'none' : 'blur(1px)'
               }}
             >
               {line}
@@ -130,15 +136,18 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
         </div>
 
         {/* CTA */}
-        {ctaText && (
-          <div className={`transition-all duration-1000 transform ${
-            ctaVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
-          }`}>
+        {ctaText && ctaText.trim() !== "" && (
+          <div
+            className={`transition-all duration-1200 ease-out transform ${
+              ctaVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-6'
+            }`}
+            style={{ transitionDelay: '3s' }}
+          >
             <a
               href="#products"
-              className="group inline-flex items-center px-12 py-4 text-emerald-900 bg-gradient-to-r from-emerald-100 to-emerald-200 rounded-full text-lg font-medium tracking-wide transition-all duration-700 hover:from-emerald-200 hover:to-emerald-300 hover:shadow-2xl hover:shadow-emerald-500/25 transform hover:-translate-y-1"
+              className="group inline-flex items-center px-12 py-4 text-stone-800 bg-stone-200/80 backdrop-blur-sm rounded-full text-lg font-medium tracking-wide transition-all duration-700 hover:bg-stone-100/90 hover:shadow-xl hover:shadow-stone-500/10 transform hover:-translate-y-1 border border-stone-300/30"
             >
               {ctaText}
               <svg
@@ -154,71 +163,57 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
         )}
       </div>
 
-      {/* スクロールインジケーター */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <div className="animate-bounce">
-          <div className="w-6 h-10 border-2 border-emerald-300 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-emerald-300 rounded-full mt-2 animate-pulse"></div>
+      {/* スクロールインジケーター - CTAがない場合のみ表示 */}
+      {(!ctaText || ctaText.trim() === "") && (
+        <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
+          subtitleVisible ? 'opacity-40' : 'opacity-0'
+        }`} style={{ transitionDelay: '4s' }}>
+          <div className="animate-bounce">
+            <div className="w-6 h-10 border-2 border-stone-400/30 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-stone-400/40 rounded-full mt-2 animate-pulse"></div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <style jsx>{`
-        @keyframes titleFade {
-          0% { opacity: 0; transform: translateY(30px) scale(0.8); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes subtitleFade {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-
         @keyframes float-1 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.4; }
+          50% { transform: translateY(-15px) scale(1.1); opacity: 0.6; }
         }
 
         @keyframes float-2 {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          33% { transform: translateY(-15px) translateX(10px); }
-          66% { transform: translateY(-5px) translateX(-5px); }
+          0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.3; }
+          33% { transform: translateY(-10px) translateX(8px) scale(1.05); opacity: 0.5; }
+          66% { transform: translateY(-3px) translateX(-4px) scale(0.95); opacity: 0.4; }
         }
 
         @keyframes float-3 {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-25px); }
+          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.5; }
+          50% { transform: translateY(-20px) scale(1.15); opacity: 0.3; }
         }
 
-        @keyframes snowfall {
-          0% { transform: translateY(-10px) translateX(0px); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(100vh) translateX(50px); opacity: 0; }
-        }
-
-        .animate-titleFade {
-          animation: titleFade 0.8s ease-out forwards;
-        }
-
-        .animate-subtitleFade {
-          animation: subtitleFade 0.6s ease-out forwards;
+        @keyframes sparkle {
+          0%, 100% { opacity: 0.1; transform: scale(0.8); }
+          25% { opacity: 0.4; transform: scale(1.2); }
+          50% { opacity: 0.6; transform: scale(1); }
+          75% { opacity: 0.3; transform: scale(1.1); }
         }
 
         .animate-float-1 {
-          animation: float-1 4s ease-in-out infinite;
+          animation: float-1 8s ease-in-out infinite;
         }
 
         .animate-float-2 {
-          animation: float-2 5s ease-in-out infinite;
+          animation: float-2 10s ease-in-out infinite;
         }
 
         .animate-float-3 {
-          animation: float-3 6s ease-in-out infinite;
+          animation: float-3 12s ease-in-out infinite;
         }
 
-        .animate-snowfall {
-          animation: snowfall 8s linear infinite;
+        .animate-sparkle {
+          animation: sparkle 12s ease-in-out infinite;
         }
       `}</style>
     </section>

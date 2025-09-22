@@ -103,7 +103,7 @@ export const defaultContent: SiteContent = {
   hero: {
     title: "茶寮 梵天庵",
     subtitle: "四季を纏う、職人の心\n受け継がれし伝統の味わい",
-    ctaText: "商品を見る"
+ctaText: ""  // CTAボタンを非表示に
   },
   products: [
     {
