@@ -102,8 +102,8 @@ export interface SiteContent {
 export const defaultContent: SiteContent = {
   hero: {
     title: "茶寮 梵天庵",
-    subtitle: "四季を纏う、職人の心\n受け継がれし伝統の味わい",
-ctaText: ""  // CTAボタンを非表示に
+    subtitle: "伝統の逸品\n心を込めた一期一会",
+    ctaText: ""  // CTAボタンを非表示に
   },
   products: [
     {

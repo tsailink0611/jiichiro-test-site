@@ -5,27 +5,26 @@ import { useEffect, useState } from 'react'
 interface HeroLuxuryProps {
   title: string
   subtitle: string
-  ctaText?: string
 }
 
-export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps) {
+export default function HeroLuxury({ title, subtitle }: HeroLuxuryProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [titleVisible, setTitleVisible] = useState(false)
   const [subtitleVisible, setSubtitleVisible] = useState(false)
-  const [ctaVisible, setCtaVisible] = useState(false)
+  // CTA関連はstate削除してシンプル化
 
   useEffect(() => {
     // ゆったりとした上品なアニメーション
     const timer1 = setTimeout(() => setIsVisible(true), 500)
     const timer2 = setTimeout(() => setTitleVisible(true), 1000)
     const timer3 = setTimeout(() => setSubtitleVisible(true), 2500)
-    const timer4 = setTimeout(() => setCtaVisible(true), 4000)
+    // CTA関連timer削除
 
     return () => {
       clearTimeout(timer1)
       clearTimeout(timer2)
       clearTimeout(timer3)
-      clearTimeout(timer4)
+      // timer4削除
     }
   }, [])
 
@@ -81,24 +80,25 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
 
       {/* コンテンツ */}
       <div className="relative z-10 text-center px-8 max-w-4xl mx-auto">
-        {/* タイトル */}
-        <h1 className="text-white mb-8">
-          <span className="block text-6xl md:text-7xl lg:text-8xl font-extralight tracking-widest mb-4 leading-tight">
+        {/* タイトル - 超高級感演出 */}
+        <h1 className="text-white mb-12">
+          <span className="block text-6xl md:text-7xl lg:text-9xl font-extralight tracking-[0.3em] mb-6 leading-tight">
             {title.split('').map((char, index) => {
               if (char === ' ') {
-                return <span key={index} className="inline-block w-8"></span>
+                return <span key={index} className="inline-block w-12"></span>
               }
               return (
                 <span
                   key={index}
-                  className={`inline-block transition-all duration-1000 ease-out transform ${
+                  className={`inline-block transition-all duration-1500 ease-out transform ${
                     titleVisible
-                      ? 'opacity-100 translate-y-0 scale-100'
-                      : 'opacity-0 translate-y-8 scale-95'
+                      ? 'opacity-100 translate-y-0 scale-100 rotate-0'
+                      : 'opacity-0 translate-y-12 scale-90 rotate-1'
                   }`}
                   style={{
-                    transitionDelay: `${titleVisible ? index * 0.08 + 0.5 : 0}s`,
-                    filter: titleVisible ? 'none' : 'blur(2px)'
+                    transitionDelay: `${titleVisible ? index * 0.12 + 0.8 : 0}s`,
+                    filter: titleVisible ? 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' : 'blur(3px)',
+                    textShadow: titleVisible ? '0 0 20px rgba(255,255,255,0.1)' : 'none'
                   }}
                 >
                   {char}
@@ -106,28 +106,40 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
               )
             })}
           </span>
+          {/* 下のタグライン */}
+          <div className={`text-center transition-all duration-1200 ease-out transform ${
+            titleVisible ? 'opacity-80 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ transitionDelay: '2.5s' }}>
+            <span className="text-xl md:text-2xl lg:text-3xl font-light tracking-[0.4em] text-stone-200/80">
+              伝統の逸品
+            </span>
+          </div>
         </h1>
 
-        {/* 装飾線 */}
-        <div className={`flex justify-center mb-12 transition-all duration-2000 ease-out ${
+        {/* 装飾線 - より繊細で上品 */}
+        <div className={`flex justify-center mb-16 transition-all duration-2500 ease-out ${
           titleVisible ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-        }`} style={{ transitionDelay: '1.5s' }}>
-          <div className="h-px bg-gradient-to-r from-transparent via-stone-400/60 to-transparent w-64"></div>
+        }`} style={{ transitionDelay: '3s' }}>
+          <div className="relative">
+            <div className="h-px bg-gradient-to-r from-transparent via-stone-300/40 to-transparent w-80"></div>
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-stone-300/60 rounded-full -mt-0.5"></div>
+          </div>
         </div>
 
-        {/* サブタイトル */}
-        <div className="text-stone-200/90 mb-16">
+        {/* サブタイトル - 情緒あるメッセージ */}
+        <div className="text-stone-100/70 mb-20">
           {subtitleLines.map((line, index) => (
             <p
               key={index}
-              className={`text-2xl md:text-3xl lg:text-4xl font-light tracking-wide leading-relaxed mb-4 transition-all duration-1500 ease-out transform ${
+              className={`text-xl md:text-2xl lg:text-3xl font-light tracking-[0.2em] leading-relaxed mb-6 transition-all duration-2000 ease-out transform ${
                 subtitleVisible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-6'
+                  ? 'opacity-100 translate-y-0 scale-100'
+                  : 'opacity-0 translate-y-8 scale-95'
               }`}
               style={{
-                transitionDelay: `${subtitleVisible ? index * 0.4 + 2 : 0}s`,
-                filter: subtitleVisible ? 'none' : 'blur(1px)'
+                transitionDelay: `${subtitleVisible ? index * 0.6 + 3.5 : 0}s`,
+                filter: subtitleVisible ? 'drop-shadow(0 2px 8px rgba(0,0,0,0.2))' : 'blur(2px)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.3)'
               }}
             >
               {line}
@@ -135,46 +147,10 @@ export default function HeroLuxury({ title, subtitle, ctaText }: HeroLuxuryProps
           ))}
         </div>
 
-        {/* CTA */}
-        {ctaText && ctaText.trim() !== "" && (
-          <div
-            className={`transition-all duration-1200 ease-out transform ${
-              ctaVisible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-6'
-            }`}
-            style={{ transitionDelay: '3s' }}
-          >
-            <a
-              href="#products"
-              className="group inline-flex items-center px-12 py-4 text-stone-800 bg-stone-200/80 backdrop-blur-sm rounded-full text-lg font-medium tracking-wide transition-all duration-700 hover:bg-stone-100/90 hover:shadow-xl hover:shadow-stone-500/10 transform hover:-translate-y-1 border border-stone-300/30"
-            >
-              {ctaText}
-              <svg
-                className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform duration-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        )}
+        {/* CTAボタン無し - 純粋な美しさを追求 */}
       </div>
 
-      {/* スクロールインジケーター - CTAがない場合のみ表示 */}
-      {(!ctaText || ctaText.trim() === "") && (
-        <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 ${
-          subtitleVisible ? 'opacity-40' : 'opacity-0'
-        }`} style={{ transitionDelay: '4s' }}>
-          <div className="animate-bounce">
-            <div className="w-6 h-10 border-2 border-stone-400/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-stone-400/40 rounded-full mt-2 animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* スクロールインジケーター削除 - ミニマルな美しさ */}
 
       <style jsx>{`
         @keyframes float-1 {

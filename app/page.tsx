@@ -58,8 +58,7 @@ export default function HomePage() {
       {/* Dynamic Hero Section */}
       <HeroLuxury
         title={content.hero?.title || "茶寮 梵天庵"}
-        subtitle={content.hero?.subtitle || "四季を纏う、職人の心\n受け継がれし伝統の味わい"}
-        ctaText={content.hero?.ctaText || "商品を見る"}
+        subtitle={content.hero?.subtitle || "伝統の逸品\n心を込めた一期一会"}
       />
 
       {/* News Section */}
